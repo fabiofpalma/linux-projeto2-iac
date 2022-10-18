@@ -1,40 +1,19 @@
 #!/bin/bash
 
-echo "Criando as pastas..."
-mkdir /publico
-mkdir /adm
-mkdir /ven
-mkdir /sec
-#ls -l /
+echo "Atualizando o servidor..."
+apt-get update -y
+apt-get upgrade -y
 
-echo "atribuindo permissões as pastas"
-chmod 777 /publico
-chmod 770 /adm /ven /sec
-#ls -l /
+echo "Instalando o serviço de servidor web Apache"
+apt-get install apache2 -y
 
-echo "Criando os grupos"
+echo "instalando o unzip"
+apt-get install unzip
 
-groupadd GRP_ADM
-groupadd GRP_VEN
-groupadd GRP_SEC
-#cat /etc/group
+echo "baixando a aplicação"
+cd /tmp/
+wget https://github.com/denilsonbonatti/linux-site-dio/archive/refs/heads/main.zip
 
-echo "Criando usuários e Atribuindo aos grupos"
-
-useradd carlos -m -s /bin/bash -p $(openssl passwd Senha123)
-chown carlos:GRP_ADM /adm
-useradd maria -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_ADM
-useradd joao -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_ADM
-
-useradd debora -m -s /bin/bash -p $(openssl passwd Senha123)
-chown debora:GRP_VEN /ven
-useradd sebastiana -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_VEN
-useradd roberto -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_VEN
-
-useradd josefina -m -s /bin/bash -p $(openssl passwd Senha123)
-chown josefina:GRP_SEC /sec
-useradd amanda -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_SEC
-useradd rogerio -m -s /bin/bash -p $(openssl passwd Senha123) -g GRP_SEC
-
-#cat /etc/passwd
-
+echo "Extraindo os aruivos da aplicação no diretório padrão do apache"
+unzip main.zip
+cp -R /tmp/linux-site-dio-main/* /var/www/html/
